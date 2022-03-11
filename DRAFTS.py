@@ -20,46 +20,50 @@ mass, force, ref˙area, density, init˙velocity, lift˙velocity, start˙position
 
     return values, drag_coeff
 
-def compute_trajectory(values, drag_coeff):
-#def compute_trajectory():
+#def compute_trajectory(values, drag_coeff):
+def compute_trajectory():
 
-    m = values[0]
-    F_thrust = values[1]
-    A_ref = values[2]
-    p = values[3]
-    v0 = values[4]
-    v_lift = values[5]
-    x0 = values[6]
-    t_i = values[7]
+    # m = values[0]
+    # F_thrust = values[1]
+    # A_ref = values[2]
+    # p = values[3]
+    # v0 = values[4]
+    # v_lift = values[5]
+    # x0 = values[6]
+    # t_i = values[7]
 
-    # m = 50000
-    # F_thrust = 600000
-    # A_ref = 800
-    # p = 1
-    # v0 = 2
-    # v_lift = 70
-    # x0 = 0
-    # t_i = 0.1
-    # drag_coeff = 0.015
+    m = 50000
+    F_thrust = 600000
+    A_ref = 800
+    p = 1
+    v0 = 2
+    v_lift = 70
+    x0 = 0
+    t_i = 0.1
+    drag_coeff = 0.015
     #breakpoint()
     a_i = 1/m * (F_thrust - 0.5 * p * v0**2 * A_ref * drag_coeff)
 
-    v_update = 0
+    velocities = ()
+
+    velocity = 0
 
     time_delta = 0
 
     while velocity < v_lift:
-        timedelta += t_i
+        t_i += time_delta
         vel_calc = velocity + a_i * time_delta
-        vel_calc += v_update
+        velocity += vel_calc
+
         
 
 
 
 
-    return a_i #position_time, velocity_time
+    return velocity #position_time, velocity_time
 ######################################
 ######################################
 # print(prompt_for_inputs())
-values, drag_coeff = prompt_for_inputs()
-print(compute_trajectory(values, drag_coeff))
+#values, drag_coeff = prompt_for_inputs()
+#print(compute_trajectory(values, drag_coeff))
+print(compute_trajectory())
