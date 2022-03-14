@@ -41,46 +41,45 @@ def compute_trajectory(values, drag_coeff):
     # x0 = 0
     # t_i = 0.1
     # drag_coeff = 0.015
-    # #breakpoint()
+    # # #breakpoint()
     a_i = 1/m * (F_thrust - 0.5 * p * v0**2 * A_ref * drag_coeff)
 
-    velocity1 = ()
+    velocities = []
 
-    
+    positions = []
+
     time_delta = 0
 
     velocity = v0 + (a_i*time_delta)
 
-
     # velocity_full = ()
-    
 
+    breakpoint()
     while velocity < v_lift:
+
         time_delta += t_i
-        # velocity1 = velocity + velocity
         velocity = v0 + (a_i*time_delta)
+        format.round(velocity, 3)
         #breakpoint()
+        velocities.append(velocity)
         position = x0 + velocity * time_delta + 0.5 * a_i * (time_delta**2)
         position += position
-        
-        
+        round(position, 3)
+        positions.append(position)
 
-    return velocity, position
-    
- ###Printing values for velocity and position fine but I need to return them as a tuple of the results        
+
+    return tuple(velocities), tuple(positions)
+ ###Printing values for velocity and position fine but I need to return them as a tuple of the results
 
 ######################################
 ######################################
 # print(prompt_for_inputs())
 values, drag_coeff = prompt_for_inputs()
 
-velocities, positions = compute_trajectory(values, drag_coeff)
+#velocities, positions = compute_trajectory()
 
-print(velocities)
-
-
+print(compute_trajectory(values, drag_coeff))
 
 
 
-
-
+# print(velocities)
