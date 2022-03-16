@@ -99,11 +99,11 @@ def print_table(increments, step):
     velocity = 0
 
     #velocity = True
-
+    print("***********************************")
     #velocity = v0 + (a_i*time_delta)
     #breakpoint()
     for i in range(0, increments):
-        print(position)
+        print(('*     {}     *     {}     *'.format(drag_coeff, position)))
         drag_coeff += step
         velocity = 0
         while velocity < v_lift:
