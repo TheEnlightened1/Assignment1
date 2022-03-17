@@ -43,6 +43,11 @@ def compute_trajectory(values, drag_coeff):
     # drag_coeff = 0.015
     # breakpoint()
     a_i = 1/m * (F_thrust - 0.5 * p * v0**2 * A_ref * drag_coeff)
+    round(a_i, 3)
+    ##Problems here with Acceleration. With v0, the initial velocity will be 0 which nullifies the drag area, but it keeps
+    ##computing that as 0 so all our drag values are wrong. we should actually have two a_i values, one for initial and one that
+    ##is constantly updated with new velocity. Or maybe a better way. Try with two accelerations to get functional, refactor later. 
+
 
     velocities = []
 
@@ -51,6 +56,7 @@ def compute_trajectory(values, drag_coeff):
     time_delta = 0
 
     velocity = v0 + (a_i*time_delta)
+    round(velocity, 3)
 
     # velocity_full = ()
 
@@ -70,7 +76,7 @@ def compute_trajectory(values, drag_coeff):
 
     return tuple(velocities), tuple(positions)
 
-def print_table(increments, step):
+def print_table(values, drag_coeff, increments, step):
 #def print_table(values, drag_coeff):
     # m = values[0]
     # F_thrust = values[1]
@@ -80,37 +86,47 @@ def print_table(increments, step):
     # v_lift = values[5]
     # x0 = values[6]
     # t_i = values[7]
-    m = 50000
-    F_thrust = 600000
-    A_ref = 800
-    p = 1
-    v0 = 0
-    v_lift = 70
-    x0 = 0
-    t_i = 0.1
-    drag_coeff = 0.015
+   
+    # m = 50000
+    # F_thrust = 600000
+    # A_ref = 800
+    # p = 1
+    # v0 = 0
+    # v_lift = 70
+    # x0 = 0
+    # t_i = 0.1
+    #drag_coeff = 0.015
 
-    time_delta = 0
+    new_drag = 0.015
 
-    position = 0
+    # time_delta = 0
 
-    new_drag = 0
+    # position = 0
 
-    velocity = 0
+    # new_drag = 0
 
-    #velocity = True
-    print("***********************************")
-    #velocity = v0 + (a_i*time_delta)
-    #breakpoint()
-    for i in range(0, increments):
-        print(('*     {}     *     {}     *'.format(drag_coeff, position)))
-        drag_coeff += step
-        velocity = 0
-        while velocity < v_lift:
-                time_delta += t_i
-                a_i = 1/m * (F_thrust - 0.5 * p * v0**2 * A_ref * drag_coeff)
-                velocity = v0 + (a_i*time_delta)
-                position = x0 + velocity * time_delta + 0.5 * a_i * (time_delta**2)
+    # velocity = 0
+
+    for i in range(0, increments):  # This should work, new_drag appears to be computing? why not printing? Could be problem with Velocity in compute trajectory
+        breakpoint()
+        new_val = compute_trajectory(values, new_drag)
+        last_val = new_val[1][-1:]
+        print(last_val)
+        new_drag += step
+
+    return
+
+    # #breakpoint()
+    # for i in range(0, increments):
+    #     #print(('*     {}     *     {}     *'.format(drag_coeff, position)))
+    #     drag_coeff += step
+    #     velocity = 0
+    #     while velocity < v_lift:
+    #         time_delta += t_i
+    #         a_i = 1/m * (F_thrust - 0.5 * p * v0**2 * A_ref * drag_coeff)
+    #         velocity = v0 + (a_i*time_delta)
+    #         position = x0 + velocity * time_delta + 0.5 * a_i * (time_delta**2)
+            
 
 
 
@@ -136,15 +152,15 @@ def print_table(increments, step):
 ######################################
 ######################################
 # print(prompt_for_inputs())
-# values, drag_coeff = prompt_for_inputs()
+values, drag_coeff = prompt_for_inputs()
 
 #velocities, positions = compute_trajectory()
 
 #print(compute_trajectory(values, drag_coeff))
 
-# print(print_table(values, drag_coeff, 10, 0.03))
+print(print_table(values, drag_coeff, 10, 0.03))
 
-print(print_table(10, 0.03))
+#print(print_table(10, 0.03))
 
 
 
