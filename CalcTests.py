@@ -16,10 +16,14 @@ drag_coeff4 = 0.135
 
 
 
-a_i = 1/m * (F_thrust - (0.5 * p * v0**2 * A_ref * drag_coeff3))
+a_i = 1/m * (F_thrust - (0.5 * p * 1.2**2 * A_ref * drag_coeff3))
+
+position = x0 + (1.2*0.1) + 0.5 * a_i * (t_i**2)
 
 round_3 = round(a_i, 3)
 
 print(a_i)
+#
+# print(round_3)
 
-print(round_3)
+print(position)

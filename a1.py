@@ -45,28 +45,36 @@ def compute_trajectory(values: tuple[float, ...],
 
     time_delta = 0
 
-    velocity = v0 + (a_i*time_delta)
+    velocity = v0 + (a_i*t_i)
+
+    position1 = 0
 
     while velocity < v_lift:
-
+        accel = 1/m * (F_thrust - 0.5 * p * velocity**2 * A_ref * drag_coeff)
         time_delta += t_i
-        velocity = v0 + (a_i*time_delta)
-        round(velocity, 3)#Not working?
-            #breakpoint()
+        velocity = v0 + (accel * time_delta)
+        velocity = round(velocity, 3)
         velocities.append(velocity)
-        position = x0 + velocity * time_delta + 0.5 * a_i * (time_delta**2)
-        position += position
-        round(position, 3)#Not working?
+        position =  0.5 * accel * (time_delta**2)
+        position = round(position, 3)
         positions.append(position)
-
 
     return tuple(velocities), tuple(positions)
 
 
+
 def print_table(values: tuple[float, ...], drag_coeff: float, increments: int, step: float):
-    """
-    """
-    pass
+
+    new_drag = drag_coeff
+
+    for i in range(0, increments):
+        new_val = compute_trajectory(values, new_drag)
+        last_val = new_val[1][-1:][0]
+        print(last_val)
+        new_drag += step
+
+    return
+
 
 def main():
     """Entry point to interaction"""

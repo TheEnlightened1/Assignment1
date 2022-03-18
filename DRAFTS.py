@@ -20,27 +20,27 @@ mass, force, ref˙area, density, init˙velocity, lift˙velocity, start˙position
 
     return values, drag_coeff
 
-#def compute_trajectory(values: tuple[float, ...], drag_coeff: float):
-def compute_trajectory():
+def compute_trajectory(values: tuple[float, ...], drag_coeff: float):
+#def compute_trajectory():
 
-    # m = values[0]
-    # F_thrust = values[1]
-    # A_ref = values[2]
-    # p = values[3]
-    # v0 = values[4]
-    # v_lift = values[5]
-    # x0 = values[6]
-    # t_i = values[7]
+    m = values[0]
+    F_thrust = values[1]
+    A_ref = values[2]
+    p = values[3]
+    v0 = values[4]
+    v_lift = values[5]
+    x0 = values[6]
+    t_i = values[7]
 
-    m = 50000
-    F_thrust = 600000
-    A_ref = 800
-    p = 1
-    v0 = 0
-    v_lift = 70
-    x0 = 0
-    t_i = 0.1
-    drag_coeff = 0.015
+    # m = 50000
+    # F_thrust = 600000
+    # A_ref = 800
+    # p = 1
+    # v0 = 0
+    # v_lift = 70
+    # x0 = 0
+    # t_i = 0.1
+    # drag_coeff = 0.015
     # breakpoint()
     a_i = 1/m * (F_thrust - 0.5 * p * v0**2 * A_ref * drag_coeff)
     # round(a_i, 3)
@@ -57,7 +57,7 @@ def compute_trajectory():
 
     velocity = v0 + (a_i*t_i)
     # round(velocity, 3)
-    position = 0
+    position1 = 0
     # velocity_full = ()
 
     #breakpoint()
@@ -68,7 +68,9 @@ def compute_trajectory():
         velocity = round(velocity, 3)
         velocities.append(velocity)
         #breakpoint()
-        position = position + (velocity) + 0.5 * accel * (0.1**2) ##This is the closest it can get to values given in Task sheet
+        position =  0.5 * accel * (time_delta**2) ##THIS NOW WORKS - WTF, WHAT ABOUT VELOCITY? Matches task sheet, starts to go a little off at
+                                                  ##15 values in (13.462) compared to task sheet. Out by 5 at the end but incrementing correct all the way
+
         position = round(position, 3)
         positions.append(position)
         #breakpoint()
@@ -76,7 +78,7 @@ def compute_trajectory():
 
     return tuple(velocities), tuple(positions)
 
-def print_table(values, drag_coeff, increments, step):
+def print_table(increments, step):
 #def print_table(values, drag_coeff):
     # m = values[0]
     # F_thrust = values[1]
@@ -97,7 +99,7 @@ def print_table(values, drag_coeff, increments, step):
     # t_i = 0.1
     #drag_coeff = 0.015
 
-    new_drag = 0.015
+    new_drag = drag_coeff
 
     # time_delta = 0
 
@@ -107,11 +109,11 @@ def print_table(values, drag_coeff, increments, step):
 
     # velocity = 0
 
-    for i in range(0, increments):  # This should work, new_drag appears to be computing? why not printing? Could be problem with Velocity in compute trajectory
-        #breakpoint()
+    for i in range(0, increments):  ##Appears to be going up, then coming back down through the middle.
         new_val = compute_trajectory(values, new_drag)
-        last_val = new_val[1][-1:]
-        print(last_val)
+        last_val = new_val[1][-1:][0]
+        print(('*     {}     *     {}     *'.format(new_drag, last_val)))
+        #breakpoint()
         new_drag += step
 
     return
@@ -127,44 +129,26 @@ def print_table(values, drag_coeff, increments, step):
     #         velocity = v0 + (a_i*time_delta)
     #         position = x0 + velocity * time_delta + 0.5 * a_i * (time_delta**2)
 
-
-
-
-
-
-
-
-
-
-
-
-##Have to find a way to get the last position from a set of drag_coeff's. Funnily enough this is where we wanted the behaviour of
-##only getting the highest most variable in the last function. Some effective python chap one and two tips could come in really handy here like
-## enumerate, zip, catch all unpacking and multiple assignment unpacking
-
-
-
-
-
-
-
-
 ######################################
+#   THERE ARE 62 ELEMNTS IN VELOCITY TUPLE
+# Positions in task sheet moving from 0.3 to 0.5 to 1, to 2, to 3
+# With position = x0 + (velocity*time_delta) + 0.5 * accel * (time_delta**2) moving in much bigger steps, that thats not update position
+## ALL NOW WORKING, LOOK AT GETTING PRINT TABLE RIGHT THEN MOVE TO MAIN - PRINT TABLE ALMOST FULLY WORKING
 ######################################
 # print(prompt_for_inputs())
-#values, drag_coeff = prompt_for_inputs()
+values, drag_coeff = prompt_for_inputs()
 
+velocities, positions = compute_trajectory(values, drag_coeff)
 
-
-#velocities, positions = compute_trajectory(values, drag_coeff)
-
-print(compute_trajectory())
+print(compute_trajectory(values, drag_coeff))
 
 
 # print(print_table(values, drag_coeff, 10, 0.03))
 
-#print(print_table(10, 0.03))
+print(print_table(10, 0.03))
+
+#print(len(velocities))
 
 
 
-# print(velocities)
+#print(velocities)
