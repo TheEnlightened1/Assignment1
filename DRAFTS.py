@@ -20,33 +20,33 @@ mass, force, ref˙area, density, init˙velocity, lift˙velocity, start˙position
 
     return values, drag_coeff
 
-def compute_trajectory(values, drag_coeff):
-#def compute_trajectory():
+#def compute_trajectory(values: tuple[float, ...], drag_coeff: float):
+def compute_trajectory():
 
-    m = values[0]
-    F_thrust = values[1]
-    A_ref = values[2]
-    p = values[3]
-    v0 = values[4]
-    v_lift = values[5]
-    x0 = values[6]
-    t_i = values[7]
+    # m = values[0]
+    # F_thrust = values[1]
+    # A_ref = values[2]
+    # p = values[3]
+    # v0 = values[4]
+    # v_lift = values[5]
+    # x0 = values[6]
+    # t_i = values[7]
 
-    # m = 50000
-    # F_thrust = 600000
-    # A_ref = 800
-    # p = 1
-    # v0 = 2
-    # v_lift = 70
-    # x0 = 0
-    # t_i = 0.1
-    # drag_coeff = 0.015
+    m = 50000
+    F_thrust = 600000
+    A_ref = 800
+    p = 1
+    v0 = 0
+    v_lift = 70
+    x0 = 0
+    t_i = 0.1
+    drag_coeff = 0.015
     # breakpoint()
     a_i = 1/m * (F_thrust - 0.5 * p * v0**2 * A_ref * drag_coeff)
-    round(a_i, 3)
+    # round(a_i, 3)
     ##Problems here with Acceleration. With v0, the initial velocity will be 0 which nullifies the drag area, but it keeps
     ##computing that as 0 so all our drag values are wrong. we should actually have two a_i values, one for initial and one that
-    ##is constantly updated with new velocity. Or maybe a better way. Try with two accelerations to get functional, refactor later. 
+    ##is constantly updated with new velocity. Or maybe a better way. Try with two accelerations to get functional, refactor later.
 
 
     velocities = []
@@ -55,23 +55,23 @@ def compute_trajectory(values, drag_coeff):
 
     time_delta = 0
 
-    velocity = v0 + (a_i*time_delta)
-    round(velocity, 3)
-
+    velocity = v0 + (a_i*t_i)
+    # round(velocity, 3)
+    position = 0
     # velocity_full = ()
 
     #breakpoint()
     while velocity < v_lift:
-
+        accel = 1/m * (F_thrust - 0.5 * p * velocity**2 * A_ref * drag_coeff) #NOT
         time_delta += t_i
-        velocity = v0 + (a_i*time_delta)
-        round(velocity, 3)
-        #breakpoint()
+        velocity = v0 + (accel * time_delta) #NOT
+        velocity = round(velocity, 3)
         velocities.append(velocity)
-        position = x0 + velocity * time_delta + 0.5 * a_i * (time_delta**2)
-        #position += position
-        round(position, 3)
+        #breakpoint()
+        position = position + (velocity) + 0.5 * accel * (0.1**2) ##This is the closest it can get to values given in Task sheet
+        position = round(position, 3)
         positions.append(position)
+        #breakpoint()
 
 
     return tuple(velocities), tuple(positions)
@@ -86,7 +86,7 @@ def print_table(values, drag_coeff, increments, step):
     # v_lift = values[5]
     # x0 = values[6]
     # t_i = values[7]
-   
+
     # m = 50000
     # F_thrust = 600000
     # A_ref = 800
@@ -108,7 +108,7 @@ def print_table(values, drag_coeff, increments, step):
     # velocity = 0
 
     for i in range(0, increments):  # This should work, new_drag appears to be computing? why not printing? Could be problem with Velocity in compute trajectory
-        breakpoint()
+        #breakpoint()
         new_val = compute_trajectory(values, new_drag)
         last_val = new_val[1][-1:]
         print(last_val)
@@ -126,7 +126,7 @@ def print_table(values, drag_coeff, increments, step):
     #         a_i = 1/m * (F_thrust - 0.5 * p * v0**2 * A_ref * drag_coeff)
     #         velocity = v0 + (a_i*time_delta)
     #         position = x0 + velocity * time_delta + 0.5 * a_i * (time_delta**2)
-            
+
 
 
 
@@ -152,13 +152,16 @@ def print_table(values, drag_coeff, increments, step):
 ######################################
 ######################################
 # print(prompt_for_inputs())
-values, drag_coeff = prompt_for_inputs()
+#values, drag_coeff = prompt_for_inputs()
 
-#velocities, positions = compute_trajectory()
 
-#print(compute_trajectory(values, drag_coeff))
 
-print(print_table(values, drag_coeff, 10, 0.03))
+#velocities, positions = compute_trajectory(values, drag_coeff)
+
+print(compute_trajectory())
+
+
+# print(print_table(values, drag_coeff, 10, 0.03))
 
 #print(print_table(10, 0.03))
 
