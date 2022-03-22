@@ -17,12 +17,9 @@ HELP = """
 """
 
 def prompt_for_inputs() -> tuple[tuple[float, ...], float]:
-    values = float(input("Input mass of plane: ")), float(input("Input engine force (in N): ")), float(input("Input reference area (in mˆ2): ")), \
-    float(input("Input air density (in kg/mˆ3): ")), float(input("Input initial velocity at start of runway (in m/s): ")), \
-    float(input("Input lift-off velocity (in m/s): ")), float(input("Input position of the start of the runway (in m): ")), \
-    float(input("Input time increment (in secs):  ")),
+    values = float(input("Input mass of the plane (in kg): ")), float(input("Input engine force (in N): ")), float(input("Input reference area (in m^2): ")), float(input("Input air density (in kg/m^3): ")), float(input("Input initial velocity at start of runway (in m/s): ")), float(input("Input lift-off velocity (in m/s): ")), float(input("Input position of the start of the runway (in m): ")), float(input("Input time increment (in secs): ")),
 
-    drag_coeff = float(input("Input drag coefficient:   "))
+    drag_coeff = float(input("Input drag coefficient: "))
 
     return values, drag_coeff
 
@@ -37,29 +34,23 @@ def compute_trajectory(values: tuple[float, ...],
     x0 = values[6]
     t_i = values[7]
 
-    a_i = 1/m * (F_thrust - 0.5 * p * v0**2 * A_ref * drag_coeff)
-
     velocities = []
 
     positions = []
 
-    time_delta = 0
-
-    velocity = v0 + (a_i*t_i)
-
-    position1 = 0
+    velocity = v0
 
     while velocity < v_lift:
         accel = 1/m * (F_thrust - 0.5 * p * velocity**2 * A_ref * drag_coeff)
-        time_delta += t_i
-        velocity = v0 + (accel * time_delta)
-        velocity = round(velocity, 3)
-        velocities.append(velocity)
-        position =  0.5 * accel * (time_delta**2)
+        position = x0 + velocity*(t_i) + 0.5 * accel * (t_i**2)
+        x0 = position
         position = round(position, 3)
         positions.append(position)
+        velocity = velocity + (accel * t_i)
+        velocity = round(velocity, 3)
+        velocities.append(velocity)
 
-    return tuple(velocities), tuple(positions)
+    return tuple(positions), tuple(velocities)
 
 
 
@@ -67,18 +58,26 @@ def print_table(values: tuple[float, ...], drag_coeff: float, increments: int, s
 
     new_drag = drag_coeff
 
+    print('**************************************')
+    print('* Drag coefficient * Runway distance *')
+    print('**************************************')
+
+
     for i in range(0, increments):
         new_val = compute_trajectory(values, new_drag)
-        last_val = new_val[1][-1:][0]
-        print(last_val)
+        last_val = new_val[0][-1:][0]
+        new_drag = round(new_drag, 4)
+        print(('*     {}        *     {}     *'.format(new_drag, last_val)))
         new_drag += step
 
-    return
+    print('**************************************')
 
 
 def main():
     """Entry point to interaction"""
     print("Implement your solution and run this file")
+    pass
 
 if __name__ == "__main__":
     main()
+    pass
