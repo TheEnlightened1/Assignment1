@@ -16,15 +16,14 @@ HELP = """
     'q' - quit
 """
 
-def prompt_for_inputs() -> tuple[tuple[float, ...], float]:
+def prompt_for_inputs():
     values = float(input("Input mass of the plane (in kg): ")), float(input("Input engine force (in N): ")), float(input("Input reference area (in m^2): ")), float(input("Input air density (in kg/m^3): ")), float(input("Input initial velocity at start of runway (in m/s): ")), float(input("Input lift-off velocity (in m/s): ")), float(input("Input position of the start of the runway (in m): ")), float(input("Input time increment (in secs): ")),
 
     drag_coeff = float(input("Input drag coefficient: "))
 
     return values, drag_coeff
 
-def compute_trajectory(values: tuple[float, ...],
-        drag_coeff: float) -> tuple[tuple[float, ...], tuple[float, ...]]:
+def compute_trajectory(values, drag_coeff):
     m = values[0]
     F_thrust = values[1]
     A_ref = values[2]
@@ -54,7 +53,7 @@ def compute_trajectory(values: tuple[float, ...],
 
 
 
-def print_table(values: tuple[float, ...], drag_coeff: float, increments: int, step: float):
+def print_table(values, drag_coeff, increments, step):
 
     new_drag = drag_coeff
 
@@ -77,11 +76,30 @@ def main():
     """Entry point to interaction"""
     print("Implement your solution and run this file")
 
-    input_var = input("Please enter a command: ")
+    increments = float
 
-    if input_var == 'i' or 'p':
-        print(prompt_for_inputs())
-        print(input_var)
+    step = float
+
+    
+    while True:
+
+        input_var = input("Please enter a command: ")
+
+        if input_var == "i":
+            values, drag_coeff = prompt_for_inputs()
+        elif input_var == "p 10 0.03": ##So this works but increments and step hardcoded
+            try:
+                print_table(values, drag_coeff, 10, 0.03)
+            except:
+                print("please enter the parameters first: ") 
+        
+        # elif input_var == "q": ## This ones tricky, need another input and conditions for it, how to handle?
+        #     try: 
+        #         quit = input("Are you sure?: ")
+
+            
+
+
 
 
 
