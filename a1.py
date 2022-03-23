@@ -66,8 +66,8 @@ def print_table(values: tuple[float, ...], drag_coeff: float, increments: int, s
     for i in range(0, increments):
         new_val = compute_trajectory(values, new_drag)
         last_val = new_val[0][-1:][0]
-        new_drag = round(new_drag, 4)
-        print(('*     {}        *     {}     *'.format(new_drag, last_val)))
+        new_drag = round(new_drag, 3)
+        print(('*     {}       *     {}      *'.format(new_drag, last_val)))
         new_drag += step
 
     print('**************************************')
@@ -76,8 +76,17 @@ def print_table(values: tuple[float, ...], drag_coeff: float, increments: int, s
 def main():
     """Entry point to interaction"""
     print("Implement your solution and run this file")
-    pass
 
-if __name__ == "__main__":
-    main()
-    pass
+    input_var = input("Please enter a command: ")
+
+    if input_var == 'i' or 'p':
+        print(prompt_for_inputs())
+        print(input_var)
+
+
+
+# if __name__ == "__main__":
+#     main()
+#     pass
+
+print(main())
