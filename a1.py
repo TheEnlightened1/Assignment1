@@ -9,12 +9,11 @@ __author__ = "<Sam Goan>, <45403844>"
 __email__ = "<s.goan@uq.net.au>"
 
 HELP = """
-    'i' - prompt for the input parameters
-    'd' - determine distances to lift-off for the current input parameters
-    'p <increments> <step>' - print out a table of distances to lift-off for different drag coefficients
-    'h' - help message
-    'q' - quit
-"""
+'i' - prompt for the input parameters
+'d' - determine distances to lift-off for the current input parameters
+'p <increments> <step>' - print out a table of distances to lift-off for different drag coefficients
+'h' - help message
+'q' - quit"""
 
 def prompt_for_inputs():
     '''
@@ -60,10 +59,10 @@ def compute_trajectory(values, drag_coeff):
         accel = 1/m * (F_thrust - 0.5 * p * velocity**2 * A_ref * drag_coeff)
         position = x0 + velocity*(t_i) + 0.5 * accel * (t_i**2)
         x0 = position
-        position = round(position, 3)
+        #position = round(position, 3)
         positions.append(position)
         velocity = velocity + (accel * t_i)
-        velocity = round(velocity, 3)
+        #velocity = round(velocity, 3)
         velocities.append(velocity)
 
     return tuple(positions), tuple(velocities)
@@ -98,66 +97,52 @@ def print_table(values, drag_coeff, increments, step):
         new_drag += step
 
     print('**************************************\n')
-    
+
 
 
 def main():
     """Entry point to interaction"""
-    print("Implement your solution and run this file")
+    #print("Implement your solution and run this file")
 
-    increments = float
-
-    step = float
-
-
-
-    
     while True:
 
         input_var = input("Please enter a command: ")
 
         input_var = input_var.split(" ")
-        
-        # main_var = input_var[0]
-
-        # increment_var = input_var[1]
-
-        # step_var = input_var[2]
-
 
         #breakpoint()
         if input_var[0] == "i":
             values, drag_coeff = prompt_for_inputs()
-        elif input_var[0] == "p": ##So this works but increments and step hardcoded
-            increments1 = float(input_var[1])
-            step1 = float(input_var[2])
-            breakpoint()
+        elif input_var[0] == "p":
             try:
-                print(print_table(values, drag_coeff, increments1, step1))
+                print(print_table(values, drag_coeff, int(input_var[1]), float(input_var[2])))
             except:
-                print("please enter the parameters first: ") 
-        
+                print("Please enter the parameters first.")
+        elif input_var[0] == 'h':
+            print(HELP)
+        elif input_var[0] == 'q':
+            q_var = input("Are you sure (y/n): ")
+            if q_var == 'y':
+                break
 
-        ##So I've now got a way to split the variables in the string for the print table P. But I think if it has given us a please enter parameters
-        ##first because we didn't do i first, even on the second round it's not saving the "values" tuple - getting nothing in print table. 
-        ## just tested for doing i first - still not save values?
+def bonus(values, runway_distance):
 
+    x0 = values[6]
 
+    drag_coeff = 0
 
+    step = 0.00001
 
-
-        # elif input_var == "q": ## This ones tricky, need another input and conditions for it, how to handle?
-        #     try: 
-        #         quit = input("Are you sure?: ")
-
-            
-
-
-
+    while x0 <= runway_distance:
+        new_val = compute_trajectory(values, drag_coeff)
+        x0 = new_val[0][-1:][0]
+        drag_coeff += step
+        x0 += x0
+    return drag_coeff
 
 
 if __name__ == "__main__":
     main()
     pass
 
-#print(main())
+print(bonus((50000, 600000, 800, 1, 0, 70, 0, 0.1), 1500))
