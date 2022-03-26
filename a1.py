@@ -59,10 +59,10 @@ def compute_trajectory(values, drag_coeff):
         accel = 1/m * (F_thrust - 0.5 * p * velocity**2 * A_ref * drag_coeff)
         position = x0 + velocity*(t_i) + 0.5 * accel * (t_i**2)
         x0 = position
-        #position = round(position, 3)
+        position = round(position, 3)
         positions.append(position)
         velocity = velocity + (accel * t_i)
-        #velocity = round(velocity, 3)
+        velocity = round(velocity, 3)
         velocities.append(velocity)
 
     return tuple(positions), tuple(velocities)
@@ -92,8 +92,8 @@ def print_table(values, drag_coeff, increments, step):
     for i in range(0, increments):
         new_val = compute_trajectory(values, new_drag)
         last_val = new_val[0][-1:][0]
-        new_drag = round(new_drag, 3)
-        print(('*     {}       *     {}      *'.format(new_drag, last_val)))
+        new_drag = round(new_drag, 4)
+        print(('*{:^18}*{:^17}*'.format(new_drag, last_val)))
         new_drag += step
 
     print('**************************************\n')
@@ -110,7 +110,6 @@ def main():
 
         input_var = input_var.split(" ")
 
-        #breakpoint()
         if input_var[0] == "i":
             values, drag_coeff = prompt_for_inputs()
         elif input_var[0] == "p":
@@ -126,6 +125,16 @@ def main():
                 break
 
 def bonus(values, runway_distance):
+
+    '''
+    Parameters:
+        values (tuple[float, ...]): mass, force, ref˙area, density,
+            init˙velocity, lift˙velocity, start˙position, time˙inc
+        runway˙distance (float): The runway distance.
+
+    Returns:
+        None
+    '''
 
     x0 = values[6]
 
@@ -145,4 +154,4 @@ if __name__ == "__main__":
     main()
     pass
 
-print(bonus((50000, 600000, 800, 1, 0, 70, 0, 0.1), 1500))
+#print(bonus((50000, 600000, 800, 1, 0, 70, 0, 0.1), 1500))
